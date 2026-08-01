@@ -10,10 +10,12 @@ export function AuthProvider({ children }) {
   const [stats, setStats] = useState({ created: 0, voted: 0, bookmarked: 0 });
   const [loading, setLoading] = useState(true);
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
   //   to load users profile
   const loadMe = async () => {
     try {
-      const { data } = await api.get("/auth/me");
+      const { data } = await api.get(`${API_URL}/auth/me`);
       setUser(data.user);
       setStats(data.stats);
     } catch (error) {
@@ -25,7 +27,7 @@ export function AuthProvider({ children }) {
 
   const refreshStats = async () => {
     try {
-      const { data } = await api.get("/auth/me");
+      const { data } = await api.get(`${API_URL}/auth/me`);
       setStats(data.stats);
     } catch (error) {
       console.error("Could not refresh profile stats", error);
@@ -45,16 +47,16 @@ export function AuthProvider({ children }) {
 
   //   to register a new user
   const register = async (formData) =>
-    (await api.post("/auth/register", formData)).data;
+    (await api.post(`${API_URL}/auth/register`, formData)).data;
 
   //   to verify OTP
   const verifyOTP = async (payload) =>
-    await api.post("/auth/verify-otp", payload);
+    await api.post(`${API_URL}/auth/verify-otp`, payload);
 
   //   to resend OTP
   const resendOTP = async (email) => {
     try {
-      const response = await api.post("/auth/resend-otp", { email });
+      const response = await api.post(`${API_URL}/auth/resend-otp`, { email });
       return response.data; // Explicitly return the success data
     } catch (error) {
       console.error(
@@ -66,26 +68,28 @@ export function AuthProvider({ children }) {
   };
   //   to login a user
   const login = async (payload) => {
-    const { data } = await api.post("/auth/login", payload);
+    const { data } = await api.post(`${API_URL}/auth/login`, payload);
     await saveToken(data.Token);
   };
 
   // for forget password
   const forgetPassword = (email) =>
-    api.post("/auth/forget-password", { email });
+    api.post(`${API_URL}/auth/forget-password`, { email });
 
   const verifyResetOtp = (payload) =>
-    api.post("/auth/verify-reset-otp", payload);
+    api.post(`${API_URL}/auth/verify-reset-otp`, payload);
 
-  const resetPassword = (payload) => api.post("/auth/reset-password", payload);
+  const resetPassword = (payload) =>
+    api.post(`${API_URL}/auth/reset-password`, payload);
 
   // for setting page to update profile and change password
   const updateProfile = async (formData) => {
-    const { data } = await api.patch("/auth/profile", formData);
+    const { data } = await api.patch(`${API_URL}/auth/profile`, formData);
     setUser(data.user);
   };
 
-  const changePassword = (payload) => api.patch("/auth/password", payload);
+  const changePassword = (payload) =>
+    api.patch(`${API_URL}/auth/password`, payload);
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -94,7 +98,7 @@ export function AuthProvider({ children }) {
 
   // to delete account
   const deleteAccount = async () => {
-    await api.delete("/auth/delete-account");
+    await api.delete(`${API_URL}/auth/delete-account`);
     await logout();
   };
 
