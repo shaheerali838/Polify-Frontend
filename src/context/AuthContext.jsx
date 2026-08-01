@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   //   to load users profile
   const loadMe = async () => {
     try {
-      const { data } = await axios.get(`/auth/me`);
+      const { data } = await api.get(`/auth/me`);
       setUser(data.user);
       setStats(data.stats);
     } catch (error) {
@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
 
   const refreshStats = async () => {
     try {
-      const { data } = await axios.get(`/auth/me`);
+      const { data } = await api.get(`/auth/me`);
       setStats(data.stats);
     } catch (error) {
       console.error("Could not refresh profile stats", error);
