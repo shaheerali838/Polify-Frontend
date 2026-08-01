@@ -81,12 +81,12 @@ export function AuthProvider({ children }) {
 
   // for setting page to update profile and change password
   const updateProfile = async (formData) => {
-    const { data } = await api.patch(`${API_URL}/auth/profile`, formData);
+    const { data } = await api.patch(`/auth/profile`, formData);
     setUser(data.user);
   };
 
   const changePassword = (payload) =>
-    api.patch(`${API_URL}/auth/password`, payload);
+    api.patch(`/auth/password`, payload);
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -95,7 +95,7 @@ export function AuthProvider({ children }) {
 
   // to delete account
   const deleteAccount = async () => {
-    await api.delete(`${API_URL}/auth/delete-account`);
+    await api.delete(`/auth/delete-account`);
     await logout();
   };
 
