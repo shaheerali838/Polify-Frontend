@@ -26,6 +26,8 @@ import {
   PollSkeleton,
   SelectField,
 } from "../components/UIElements.jsx";
+import FollowButton from "../components/FollowButton.jsx";
+import UserBadge from "../components/UserBadge.jsx";
 
 const CATEGORIES = [
   "",
@@ -258,15 +260,16 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
     return (
       <article className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-4 shadow-xl shadow-black/20">
         <div className="mb-4 flex items-center gap-3">
-          <Avatar user={poll.creator} className="h-10 w-10" />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-white">
-              {poll.creator?.name || "Pollify user"}
-            </p>
-            <p className="text-xs text-zinc-500">
-              @{poll.creator?.username || "user"} · {poll.category || "General"}
-            </p>
-          </div>
+          <UserBadge 
+            user={poll.creator} 
+            className="flex-1 min-w-0"
+            rightAction={
+              poll.creator?.username && (
+                <FollowButton username={poll.creator.username} />
+              )
+            }
+            subtitleSuffix={` · ${poll.category || "General"}`}
+          />
           <div className="flex items-center gap-2">
             {canManage && (
               <>

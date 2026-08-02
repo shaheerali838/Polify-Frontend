@@ -7,7 +7,8 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import VerifyOtpPage from "./pages/VerifyOtpPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import CreatePollPage from "./pages/CreatePollPage.jsx";
-import MyProfilePage from "./pages/MyProfilePage.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
+import PublicProfilePage from "./pages/PublicProfilePage.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import { appStyles as s } from "./assets/dummyStyles.jsx";
 import { Loader2 } from "lucide-react";
@@ -38,15 +39,16 @@ const App = () => {
         <Route
           path="/"
           element={
-            // <ProtectedRoute>
-            <Layout />
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
           }
         >
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/create-poll" element={<CreatePollPage />} />
-          <Route path="/my-profile" element={<MyProfilePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/profile/:username" element={<PublicProfilePage />} />
           <Route
             path="/my-polls"
             element={<DashboardPage endpoint="/polls/mine" title="My polls" />}

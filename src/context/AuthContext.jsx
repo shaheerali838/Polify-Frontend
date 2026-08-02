@@ -8,6 +8,7 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState({ created: 0, voted: 0, bookmarked: 0 });
+  const [connections, setConnections] = useState({ followers: [], following: [] });
   const [loading, setLoading] = useState(true);
 
   //   to load users profile
@@ -16,6 +17,16 @@ export function AuthProvider({ children }) {
       const { data } = await api.get(`/auth/me`);
       setUser(data.user);
       setStats(data.stats);
+
+      // fetch current user connections
+      try {
+        if (data.user?.username) {
+          const connRes = await api.get(`/users/${data.user.username}/connections`);
+          setConnections(connRes.data || { followers: [], following: [] });
+        }
+      } catch (err) {
+        console.error("Could not fetch connections", err);
+      }
     } catch (error) {
       setUser(null);
     } finally {
@@ -88,6 +99,20 @@ export function AuthProvider({ children }) {
   const changePassword = (payload) =>
     api.patch(`/auth/password`, payload);
 
+  const toggleFollow = async (username) => {
+    try {
+      const { data } = await api.post(`/users/${username}/follow`);
+      // Update local connections if the current user profile was fetched
+      if (user?.username) {
+        const connRes = await api.get(`/users/${user.username}/connections`);
+        setConnections(connRes.data || { followers: [], following: [] });
+      }
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const logout = async () => {
     localStorage.removeItem("token");
     setUser(null);
@@ -114,10 +139,12 @@ export function AuthProvider({ children }) {
         resetPassword,
         updateProfile,
         changePassword,
+        toggleFollow,
         deleteAccount,
         logout,
         refresh: loadMe,
         refreshStats,
+        connections,
       }}
     >
       {children}

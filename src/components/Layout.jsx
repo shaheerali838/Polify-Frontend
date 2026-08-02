@@ -15,6 +15,7 @@ import {
   Plus,
   Search,
   UserRound,
+  Settings,
   X,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -103,11 +104,20 @@ const Layout = () => {
                   <button
                     onClick={() => {
                       setUserOpen(false);
-                      navigate("/my-profile");
+                      navigate(`/profile/${user?.username}`);
                     }}
                     className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-800"
                   >
                     <UserRound size={16} /> View profile
+                  </button>
+                  <button
+                    onClick={() => {
+                      setUserOpen(false);
+                      navigate("/settings");
+                    }}
+                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-800"
+                  >
+                    <Settings size={16} /> Settings
                   </button>
                   <button
                     onClick={signOut}
@@ -140,12 +150,15 @@ const Layout = () => {
         <aside className={s.leftSidebar}>
           <p className={s.menuLabel}>Menu</p>
           <nav className={s.navContainer}>
-            {NAV.map(({ to, label, Icon }) => (
-              <NavLink key={to} to={to} className={sidebarLinkClass}>
-                <Icon size={17} />
-                {label}
-              </NavLink>
-            ))}
+            {NAV.map(({ to, label, Icon }) => {
+              const linkTo = to === "/my-profile" ? `/profile/${user?.username}` : to;
+              return (
+                <NavLink key={to} to={linkTo} className={sidebarLinkClass}>
+                  <Icon size={17} />
+                  {label}
+                </NavLink>
+              );
+            })}
           </nav>
           <div className={s.sidebarBottom}>
             <button onClick={signOut} className={s.logoutButton}>
@@ -189,20 +202,23 @@ const Layout = () => {
       </div>
 
       <nav className={s.bottomNav}>
-        {NAV.map(({ to, label, Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              `${s.bottomLinkBase} ${
-                isActive ? s.bottomLinkActive : s.bottomLinkInactive
-              }`
-            }
-          >
-            <Icon size={18} />
-            {label}
-          </NavLink>
-        ))}
+        {NAV.map(({ to, label, Icon }) => {
+          const linkTo = to === "/my-profile" ? `/profile/${user?.username}` : to;
+          return (
+            <NavLink
+              key={to}
+              to={linkTo}
+              className={({ isActive }) =>
+                `${s.bottomLinkBase} ${
+                  isActive ? s.bottomLinkActive : s.bottomLinkInactive
+                }`
+              }
+            >
+              <Icon size={18} />
+              {label}
+            </NavLink>
+          );
+        })}
       </nav>
     </div>
   );
