@@ -27,8 +27,8 @@ import ThemeToggle from "./ThemeToggle.jsx";
 const NAV = [
   { to: "/dashboard", label: "Dashboard", Icon: LayoutGrid },
   { to: "/create-poll", label: "Create", Icon: Plus },
-  { to: "/my-profile", label: "My Profile", Icon: UserRound },
-  { to: "/my-polls", label: "My Polls", Icon: PenLine },
+  { to: "/my-profile", label: "My Profile", mobileLabel: "Profile", Icon: UserRound },
+  { to: "/my-polls", label: "My Polls", mobileLabel: "Polls", Icon: PenLine },
   { to: "/voted-polls", label: "Voted", Icon: CheckCircle2 },
   { to: "/bookmarked-polls", label: "Saved", Icon: Bookmark },
 ];
@@ -204,7 +204,7 @@ const Layout = () => {
       </div>
 
       <nav className={s.bottomNav}>
-        {NAV.map(({ to, label, Icon }) => {
+        {NAV.map(({ to, label, mobileLabel, Icon }) => {
           const linkTo = to === "/my-profile" ? `/profile/${user?.username}` : to;
           return (
             <NavLink
@@ -217,7 +217,7 @@ const Layout = () => {
               }
             >
               <Icon size={18} />
-              {label}
+              {mobileLabel || label}
             </NavLink>
           );
         })}
