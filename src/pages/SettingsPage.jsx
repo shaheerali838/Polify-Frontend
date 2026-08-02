@@ -124,12 +124,12 @@ const SettingsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 shadow-2xl shadow-black/20">
+      <div className="rounded-3xl border border-zinc-400 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-6 shadow-2xl shadow-zinc-300/50 dark:shadow-black/20">
         <div className="mb-5 flex items-center gap-2">
           <Settings size={22} className="text-emerald-400" />
-          <h1 className="text-2xl font-bold text-white">Account Settings</h1>
+          <h1 className="text-2xl font-bold text-zinc-950 dark:text-white">Account Settings</h1>
         </div>
-        <p className="text-sm text-zinc-400">Manage your profile details, avatar, and security settings.</p>
+        <p className="text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">Manage your profile details, avatar, and security settings.</p>
       </div>
 
       {message.text ? (
@@ -143,11 +143,11 @@ const SettingsPage = () => {
       <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
         <form
           onSubmit={handleProfileSubmit}
-          className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 shadow-xl shadow-black/20"
+          className="rounded-3xl border border-zinc-400 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-6 shadow-xl shadow-zinc-300/50 dark:shadow-black/20"
         >
           <div className="mb-5 flex items-center gap-2">
             <UserRound size={18} className="text-emerald-400" />
-            <h2 className="text-lg font-semibold text-white">Edit profile</h2>
+            <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">Edit profile</h2>
           </div>
 
           <div className="mb-6 flex items-center gap-4">
@@ -163,7 +163,7 @@ const SettingsPage = () => {
                   {user?.name?.[0]?.toUpperCase() || <UserRound size={24} />}
                 </div>
               )}
-              <label className="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-emerald-300 shadow-lg">
+              <label className="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-zinc-500 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-emerald-300 shadow-lg">
                 <Camera size={16} />
                 <input
                   type="file"
@@ -174,44 +174,44 @@ const SettingsPage = () => {
               </label>
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">Profile Photo</p>
-              <p className="text-xs text-zinc-500 mt-1">Recommended 400x400px.</p>
+              <p className="text-sm font-semibold text-zinc-950 dark:text-white">Profile Photo</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-700 dark:text-zinc-500 mt-1">Recommended 400x400px.</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <label className="block">
-              <span className="mb-2 block text-sm text-zinc-400">
+              <span className="mb-2 block text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">
                 Full name
               </span>
               <input
                 name="name"
                 value={form.name}
                 onChange={handleProfileChange}
-                className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-emerald-400"
+                className="w-full rounded-2xl border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-4 py-3 text-sm text-zinc-950 dark:text-zinc-100 outline-none transition focus:border-emerald-400"
                 placeholder="Your full name"
               />
             </label>
 
             <label className="block">
-              <span className="mb-2 block text-sm text-zinc-400">Username</span>
+              <span className="mb-2 block text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">Username</span>
               <input
                 name="username"
                 value={form.username}
                 onChange={handleProfileChange}
-                className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-emerald-400"
+                className="w-full rounded-2xl border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-4 py-3 text-sm text-zinc-950 dark:text-zinc-100 outline-none transition focus:border-emerald-400"
                 placeholder="username"
               />
             </label>
 
             <label className="block">
-              <span className="mb-2 block text-sm text-zinc-400">Bio</span>
+              <span className="mb-2 block text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">Bio</span>
               <textarea
                 name="bio"
                 value={form.bio}
                 onChange={handleProfileChange}
                 rows="4"
-                className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-emerald-400"
+                className="w-full rounded-2xl border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-4 py-3 text-sm text-zinc-950 dark:text-zinc-100 outline-none transition focus:border-emerald-400"
                 placeholder="Tell people about yourself"
               />
             </label>
@@ -238,18 +238,18 @@ const SettingsPage = () => {
         <div className="space-y-6">
           <form
             onSubmit={handlePasswordSubmit}
-            className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 shadow-xl shadow-black/20"
+            className="rounded-3xl border border-zinc-400 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-6 shadow-xl shadow-zinc-300/50 dark:shadow-black/20"
           >
             <div className="mb-5 flex items-center gap-2">
               <Lock size={18} className="text-emerald-400" />
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">
                 Change password
               </h2>
             </div>
 
             <div className="space-y-4">
               <label className="block">
-                <span className="mb-2 block text-sm text-zinc-400">
+                <span className="mb-2 block text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">
                   Current password
                 </span>
                 <input
@@ -261,13 +261,13 @@ const SettingsPage = () => {
                       oldPassword: event.target.value,
                     }))
                   }
-                  className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-emerald-400"
+                  className="w-full rounded-2xl border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-4 py-3 text-sm text-zinc-950 dark:text-zinc-100 outline-none transition focus:border-emerald-400"
                   placeholder="Enter current password"
                 />
               </label>
 
               <label className="block">
-                <span className="mb-2 block text-sm text-zinc-400">
+                <span className="mb-2 block text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">
                   New password
                 </span>
                 <input
@@ -279,13 +279,13 @@ const SettingsPage = () => {
                       newPassword: event.target.value,
                     }))
                   }
-                  className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-emerald-400"
+                  className="w-full rounded-2xl border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-4 py-3 text-sm text-zinc-950 dark:text-zinc-100 outline-none transition focus:border-emerald-400"
                   placeholder="At least 6 characters"
                 />
               </label>
 
               <label className="block">
-                <span className="mb-2 block text-sm text-zinc-400">
+                <span className="mb-2 block text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">
                   Confirm new password
                 </span>
                 <input
@@ -297,7 +297,7 @@ const SettingsPage = () => {
                       confirmPassword: event.target.value,
                     }))
                   }
-                  className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-emerald-400"
+                  className="w-full rounded-2xl border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-4 py-3 text-sm text-zinc-950 dark:text-zinc-100 outline-none transition focus:border-emerald-400"
                   placeholder="Re-enter password"
                 />
               </label>
@@ -310,14 +310,14 @@ const SettingsPage = () => {
             </div>
           </form>
 
-          <div className="rounded-3xl border border-rose-500/20 bg-rose-500/10 p-6 shadow-xl shadow-black/20">
+          <div className="rounded-3xl border border-rose-500/20 bg-rose-500/10 p-6 shadow-xl shadow-zinc-300/50 dark:shadow-black/20">
             <div className="mb-4 flex items-center gap-2">
               <Shield size={18} className="text-rose-300" />
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">
                 Account actions
               </h2>
             </div>
-            <p className="mb-4 text-sm text-zinc-400">
+            <p className="mb-4 text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">
               Deleting your account is permanent and removes your polls, votes,
               and comments.
             </p>

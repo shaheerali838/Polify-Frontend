@@ -227,7 +227,7 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
         className={`relative overflow-hidden rounded-2xl border p-3 text-left transition ${
           selected
             ? "border-emerald-400 bg-emerald-500/10"
-            : "border-zinc-800 bg-zinc-900/70 hover:border-zinc-700"
+            : "border-zinc-400 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 hover:border-zinc-500 dark:hover:border-zinc-700"
         }`}
       >
         {imageUrl && (
@@ -237,12 +237,12 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
             className="mb-2 h-36 w-full rounded-xl object-cover"
           />
         )}
-        <div className="relative z-10 flex items-center justify-between gap-3 text-sm text-zinc-100">
+        <div className="relative z-10 flex items-center justify-between gap-3 text-sm text-zinc-950 dark:text-zinc-100">
           <span>{label}</span>
           {selected && <Check size={16} className="text-emerald-400" />}
         </div>
         {poll.totalVotes > 0 && (
-          <div className="relative z-10 mt-2 text-xs text-zinc-500">
+          <div className="relative z-10 mt-2 text-xs text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
             {result?.percent || 0}% · {result?.count || 0} votes
           </div>
         )}
@@ -258,7 +258,7 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
     const { commentCount, showComments, toggleComments } = useComments();
 
     return (
-      <article className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-4 shadow-xl shadow-black/20">
+      <article className="rounded-3xl border border-zinc-400 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 p-4 shadow-xl shadow-zinc-300/50 dark:shadow-black/20">
         <div className="mb-4 flex items-center gap-3">
           <UserBadge 
             user={poll.creator} 
@@ -277,7 +277,7 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
                   type="button"
                   onClick={togglePollStatus}
                   disabled={managing}
-                  className="rounded-xl border border-zinc-700 bg-zinc-950 px-2.5 py-2 text-xs text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200"
+                  className="rounded-xl border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-2.5 py-2 text-xs text-zinc-500 dark:text-zinc-800 dark:text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200"
                 >
                   <span className="flex items-center gap-1">
                     <Lock size={14} />
@@ -304,7 +304,7 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
               className={`rounded-xl p-2 ${
                 isBookmarked
                   ? "bg-emerald-500/15 text-emerald-300"
-                  : "text-zinc-500 hover:bg-zinc-800"
+                  : "text-zinc-500 dark:text-zinc-700 dark:text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800"
               }`}
             >
               <Bookmark size={18} />
@@ -312,7 +312,7 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
           </div>
         </div>
 
-        <h2 className="mb-4 text-lg font-bold leading-snug text-white">
+        <h2 className="mb-4 text-lg font-bold leading-snug text-zinc-950 dark:text-white">
           {poll.question}
         </h2>
 
@@ -344,7 +344,7 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
                   className={`flex flex-1 items-center justify-center rounded-xl border py-3 ${
                     Number(value) === rating
                       ? "border-amber-400 bg-amber-500/10 text-amber-300"
-                      : "border-zinc-800 text-zinc-500 hover:text-amber-300"
+                      : "border-zinc-400 dark:border-zinc-800 text-zinc-500 dark:text-zinc-700 dark:text-zinc-500 hover:text-amber-300"
                   }`}
                 >
                   <Star size={18} fill="currentColor" />
@@ -378,7 +378,7 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
 
         {error && <p className="mt-3 text-xs text-rose-300">{error}</p>}
 
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+        <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
           <span className="inline-flex items-center gap-1">
             <ThumbsUp size={14} />
             {poll.totalVotes || 0} votes
@@ -386,7 +386,7 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
           <button
             type="button"
             onClick={() => toggleComments()}
-            className="inline-flex items-center gap-1 hover:text-zinc-300"
+            className="inline-flex items-center gap-1 hover:text-zinc-500 dark:hover:text-zinc-800 dark:hover:text-zinc-300"
           >
             <MessageCircle size={14} />
             {commentCount} comments
@@ -474,14 +474,14 @@ export default function DashboardPage({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <div className="rounded-3xl border border-zinc-400 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 p-5">
         <div className="flex items-center gap-2 text-emerald-400">
           <TrendingUp size={18} />
           <span className="text-xs font-bold uppercase tracking-widest">
             Pollify Feed
           </span>
         </div>
-        <h1 className="mt-2 text-2xl font-black text-white">{title}</h1>
+        <h1 className="mt-2 text-2xl font-black text-zinc-950 dark:text-white">{title}</h1>
         {endpoint === "/polls" && (
           <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
             <SelectField
@@ -519,7 +519,7 @@ export default function DashboardPage({
           />
         ))
       ) : (
-        <div className="rounded-3xl border border-dashed border-zinc-800 p-10 text-center text-zinc-500">
+        <div className="rounded-3xl border border-dashed border-zinc-400 dark:border-zinc-800 p-10 text-center text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
           No polls found yet.
         </div>
       )}

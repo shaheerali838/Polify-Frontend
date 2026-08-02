@@ -266,17 +266,17 @@ export function CommentSection() {
   if (!showComments) return null;
 
   return (
-    <div className="mt-4 border-t border-zinc-800 pt-4">
+    <div className="mt-4 border-t border-zinc-400 dark:border-zinc-800 pt-4">
       <form onSubmit={addComment} className="mb-3 flex gap-2">
         <input
           value={comment}
           onChange={(event) => setComment(event.target.value)}
           placeholder="Add a comment"
-          className="flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-200 outline-none"
+          className="flex-1 rounded-xl border border-zinc-400 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 outline-none"
         />
         <button
           type="submit"
-          className="rounded-xl bg-emerald-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-400"
+          className="rounded-xl bg-emerald-500 px-3 py-2 text-sm font-medium text-zinc-950 dark:text-white transition hover:bg-emerald-400"
         >
           Post
         </button>
@@ -290,11 +290,11 @@ export function CommentSection() {
         {normalizeComments(comments).map((item) => (
           <div
             key={item._id}
-            className="rounded-xl bg-zinc-950 p-3 text-sm text-zinc-300"
+            className="rounded-xl bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-500 dark:text-zinc-800 dark:text-zinc-300"
           >
             <div className="flex items-start justify-between gap-2">
               <p className="flex-1">
-                <b className="text-zinc-100">{item.user?.name}: </b>
+                <b className="text-zinc-950 dark:text-zinc-100">{item.user?.name}: </b>
                 {item.text}
               </p>
               {isOwnComment(item) && (

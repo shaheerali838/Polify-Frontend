@@ -22,6 +22,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import useClickOutside from "../hooks/useClickoutside.js";
 import NotificationBell from "./NotificationBell.jsx";
 import { Avatar } from "./UIElements.jsx";
+import ThemeToggle from "./ThemeToggle.jsx";
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", Icon: LayoutGrid },
@@ -87,6 +88,7 @@ const Layout = () => {
             <NavLink to="/create-poll" className={s.createButton}>
               <Plus size={15} /> Create
             </NavLink>
+            <ThemeToggle />
             <NotificationBell />
 
             <div ref={userRef} className={s.avatarWrapper}>
@@ -94,19 +96,19 @@ const Layout = () => {
                 <Avatar user={user} className={s.avatarClass} />
               </button>
               {userOpen && (
-                <div className="dropdown-scrollbar absolute right-0 mt-2 w-56 rounded-2xl border border-zinc-800 bg-zinc-900 p-2 shadow-2xl">
+                <div className="dropdown-scrollbar absolute right-0 mt-2 w-56 rounded-2xl border border-zinc-400 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 shadow-2xl">
                   <div className="px-3 py-2">
-                    <p className="text-sm font-semibold text-white">
+                    <p className="text-sm font-semibold text-zinc-950 dark:text-white">
                       {user?.name}
                     </p>
-                    <p className="text-xs text-zinc-500">@{user?.username}</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">@{user?.username}</p>
                   </div>
                   <button
                     onClick={() => {
                       setUserOpen(false);
                       navigate(`/profile/${user?.username}`);
                     }}
-                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-800"
+                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800"
                   >
                     <UserRound size={16} /> View profile
                   </button>
@@ -115,7 +117,7 @@ const Layout = () => {
                       setUserOpen(false);
                       navigate("/settings");
                     }}
-                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-800"
+                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800"
                   >
                     <Settings size={16} /> Settings
                   </button>
@@ -172,7 +174,7 @@ const Layout = () => {
         </main>
 
         <aside className={s.rightRail}>
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-5">
+          <div className="rounded-3xl border border-zinc-400 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 p-5">
             <div className="mb-3 flex items-center gap-3">
               {user?.avatar ? (
                 <img
@@ -186,15 +188,15 @@ const Layout = () => {
                 </div>
               )}
               <div>
-                <p className="text-sm font-semibold text-white">
+                <p className="text-sm font-semibold text-zinc-950 dark:text-white">
                   Welcome, {user?.name}
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
                   @{user?.username || "user"}
                 </p>
               </div>
             </div>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
               Create polls, vote, comment, and save your favorite conversations.
             </p>
           </div>

@@ -43,7 +43,7 @@ export default function FollowButton({
         variant="ghost"
         onClick={handleToggle}
         disabled={loading}
-        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs text-zinc-300 border border-zinc-700 bg-zinc-950 hover:border-rose-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition ${className}`}
+        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs text-zinc-500 dark:text-zinc-800 dark:text-zinc-300 border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 hover:border-rose-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition ${className}`}
       >
         <UserMinus size={14} />
         {loading ? "..." : "Unfollow"}

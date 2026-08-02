@@ -32,9 +32,9 @@ export function ConfirmModal({
 
   return (
     <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 px-4 py-6">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl shadow-black/40">
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
-        <p className="mt-2 text-sm leading-6 text-zinc-400">{message}</p>
+      <div className="w-full max-w-md rounded-3xl border border-zinc-400 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl shadow-zinc-300/50 dark:shadow-black/40">
+        <h3 className="text-lg font-semibold text-zinc-950 dark:text-white">{title}</h3>
+        <p className="mt-2 text-sm leading-6 text-zinc-500 dark:text-zinc-800 dark:text-zinc-400">{message}</p>
         <div className="mt-6 flex justify-end gap-3">
           <Button type="button" variant="ghost" onClick={onCancel}>
             {cancelLabel}
@@ -115,13 +115,13 @@ export function SelectField({
         aria-haspopup="listbox"
         onClick={() => setOpen((current) => !current)}
         onKeyDown={onKeyDown}
-        className="flex w-full items-center justify-between rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-left text-sm text-zinc-100 shadow-sm outline-none transition hover:border-zinc-600 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+        className="flex w-full items-center justify-between rounded-2xl border border-zinc-500 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-4 py-3 text-left text-sm text-zinc-950 dark:text-zinc-100 shadow-sm outline-none transition hover:border-zinc-600 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
       >
         <span className="truncate">{selected?.label}</span>
         <ChevronDown
           aria-hidden="true"
           size={18}
-          className={`ml-3 shrink-0 text-zinc-400 transition-transform ${
+          className={`ml-3 shrink-0 text-zinc-500 dark:text-zinc-800 dark:text-zinc-400 transition-transform ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -131,7 +131,7 @@ export function SelectField({
         <div
           role="listbox"
           aria-label={ariaLabel}
-          className="dropdown-scrollbar absolute z-30 mt-2 max-h-60 w-full overflow-y-auto rounded-2xl border border-zinc-700 bg-zinc-900 p-1.5 shadow-2xl shadow-black/40"
+          className="dropdown-scrollbar absolute z-30 mt-2 max-h-60 w-full overflow-y-auto rounded-2xl border border-zinc-500 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-1.5 shadow-2xl shadow-zinc-300/50 dark:shadow-black/40"
         >
           {options.map((option) => {
             const isSelected = option.value === value;
@@ -145,7 +145,7 @@ export function SelectField({
                 className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition ${
                   isSelected
                     ? "bg-emerald-500/15 text-emerald-200"
-                    : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                    : "text-zinc-500 dark:text-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white"
                 }`}
               >
                 <span>{option.label}</span>

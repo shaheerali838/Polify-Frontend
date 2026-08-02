@@ -13,12 +13,12 @@ export default function UserBadge({ user, className = "", rightAction, subtitleS
       </Link>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <Link to={`/profile/${username}`} className="truncate text-sm font-semibold text-white hover:underline">
+          <Link to={`/profile/${username}`} className="truncate text-sm font-semibold text-zinc-950 dark:text-white hover:underline">
             {safeUser.name || "Pollify user"}
           </Link>
           {rightAction}
         </div>
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
           <Link to={`/profile/${username}`} className="hover:underline">
             @{username}
           </Link>

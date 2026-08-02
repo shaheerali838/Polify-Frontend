@@ -52,9 +52,9 @@ export default function CreatePollPage() {
   };
 
   return (
-    <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-5">
-      <h1 className="text-2xl font-black text-white">Create poll</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+    <div className="rounded-3xl border border-zinc-400 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 p-5">
+      <h1 className="text-2xl font-black text-zinc-950 dark:text-white">Create poll</h1>
+      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
         Ask a question and collect votes from your community.
       </p>
 
@@ -73,7 +73,7 @@ export default function CreatePollPage() {
           placeholder="What should we vote on?"
         />
         <label className="block">
-          <span className="mb-1 block text-xs font-semibold text-zinc-500">
+          <span className="mb-1 block text-xs font-semibold text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
             Category
           </span>
           <SelectField
@@ -85,7 +85,7 @@ export default function CreatePollPage() {
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-xs font-semibold text-zinc-500">
+          <span className="mb-1 block text-xs font-semibold text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
             Poll type
           </span>
           <SelectField
@@ -105,7 +105,7 @@ export default function CreatePollPage() {
         {type === "single" && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-zinc-500">
+              <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-700 dark:text-zinc-500">
                 Options
               </span>
               <button
@@ -132,7 +132,7 @@ export default function CreatePollPage() {
                     )
                   }
                   placeholder={`Option ${index + 1}`}
-                  className="flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-200 outline-none"
+                  className="flex-1 rounded-xl border border-zinc-400 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 outline-none"
                 />
                 <button
                   type="button"
@@ -143,7 +143,7 @@ export default function CreatePollPage() {
                       ),
                     )
                   }
-                  className="rounded-xl p-2 text-zinc-500 hover:bg-zinc-800"
+                  className="rounded-xl p-2 text-zinc-500 dark:text-zinc-700 dark:text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -153,7 +153,7 @@ export default function CreatePollPage() {
         )}
 
         {type === "image" && (
-          <label className="grid cursor-pointer place-items-center rounded-2xl border border-dashed border-zinc-700 p-8 text-center text-zinc-400 hover:border-emerald-500/50">
+          <label className="grid cursor-pointer place-items-center rounded-2xl border border-dashed border-zinc-500 dark:border-zinc-700 p-8 text-center text-zinc-500 dark:text-zinc-800 dark:text-zinc-400 hover:border-emerald-500/50">
             <ImagePlus className="mb-2" />
             <span>
               {images.length
