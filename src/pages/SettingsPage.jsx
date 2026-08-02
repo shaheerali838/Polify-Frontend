@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Camera, Lock, Shield, Trash2, UserRound } from "lucide-react";
+import { Camera, Lock, Shield, Trash2, UserRound, Settings } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { Button, ConfirmModal } from "../components/UIElements.jsx";
 
@@ -9,7 +9,7 @@ const initialForm = (user = {}) => ({
   bio: user?.bio || "",
 });
 
-const MyProfilePage = () => {
+const SettingsPage = () => {
   const {
     user,
     stats,
@@ -18,6 +18,7 @@ const MyProfilePage = () => {
     deleteAccount,
     refresh,
     refreshStats,
+    connections,
   } = useAuth();
   const [form, setForm] = useState(initialForm(user));
   const [avatarFile, setAvatarFile] = useState(null);
@@ -34,8 +35,7 @@ const MyProfilePage = () => {
   useEffect(() => {
     setForm(initialForm(user));
     setAvatarPreview(user?.avatar || "");
-    refreshStats?.();
-  }, [user, refreshStats]);
+  }, [user]);
 
   const handleProfileChange = (event) => {
     const { name, value } = event.target;
@@ -122,20 +122,35 @@ const MyProfilePage = () => {
     }
   };
 
-  const statsCards = useMemo(
-    () => [
-      { label: "Polls created", value: stats?.created ?? 0 },
-      { label: "Polls voted", value: stats?.voted ?? 0 },
-      { label: "Saved polls", value: stats?.bookmarked ?? 0 },
-    ],
-    [stats],
-  );
-
   return (
     <div className="space-y-6">
       <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 shadow-2xl shadow-black/20">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-4">
+        <div className="mb-5 flex items-center gap-2">
+          <Settings size={22} className="text-emerald-400" />
+          <h1 className="text-2xl font-bold text-white">Account Settings</h1>
+        </div>
+        <p className="text-sm text-zinc-400">Manage your profile details, avatar, and security settings.</p>
+      </div>
+
+      {message.text ? (
+        <div
+          className={`rounded-2xl border px-4 py-3 text-sm ${message.type === "success" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-rose-500/30 bg-rose-500/10 text-rose-300"}`}
+        >
+          {message.text}
+        </div>
+      ) : null}
+
+      <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
+        <form
+          onSubmit={handleProfileSubmit}
+          className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 shadow-xl shadow-black/20"
+        >
+          <div className="mb-5 flex items-center gap-2">
+            <UserRound size={18} className="text-emerald-400" />
+            <h2 className="text-lg font-semibold text-white">Edit profile</h2>
+          </div>
+
+          <div className="mb-6 flex items-center gap-4">
             <div className="relative">
               {avatarPreview ? (
                 <img
@@ -159,56 +174,9 @@ const MyProfilePage = () => {
               </label>
             </div>
             <div>
-              <p className="text-2xl font-semibold text-white">
-                {user?.name || "Your profile"}
-              </p>
-              <p className="text-sm text-zinc-400">
-                @{user?.username || "yourname"}
-              </p>
-              <p className="mt-2 max-w-xl text-sm text-zinc-500">
-                {user?.bio || "Add a short bio to tell people more about you."}
-              </p>
+              <p className="text-sm font-semibold text-white">Profile Photo</p>
+              <p className="text-xs text-zinc-500 mt-1">Recommended 400x400px.</p>
             </div>
-          </div>
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-950/70 px-4 py-3 text-sm text-zinc-400">
-            <p className="font-medium text-zinc-300">Membership</p>
-            <p className="mt-1 text-xs text-zinc-500">
-              Keep your profile fresh and secure.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {message.text ? (
-        <div
-          className={`rounded-2xl border px-4 py-3 text-sm ${message.type === "success" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-rose-500/30 bg-rose-500/10 text-rose-300"}`}
-        >
-          {message.text}
-        </div>
-      ) : null}
-
-      <div className="grid gap-4 md:grid-cols-3">
-        {statsCards.map((item) => (
-          <div
-            key={item.label}
-            className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4"
-          >
-            <p className="text-sm text-zinc-500">{item.label}</p>
-            <p className="mt-2 text-2xl font-semibold text-white">
-              {item.value}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
-        <form
-          onSubmit={handleProfileSubmit}
-          className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 shadow-xl shadow-black/20"
-        >
-          <div className="mb-5 flex items-center gap-2">
-            <UserRound size={18} className="text-emerald-400" />
-            <h2 className="text-lg font-semibold text-white">Edit profile</h2>
           </div>
 
           <div className="space-y-4">
@@ -379,4 +347,4 @@ const MyProfilePage = () => {
   );
 };
 
-export default MyProfilePage;
+export default SettingsPage;
