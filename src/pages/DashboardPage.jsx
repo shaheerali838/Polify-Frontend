@@ -12,6 +12,12 @@ import {
   TrendingUp,
 } from "lucide-react";
 import api from "../utils/api";
+import { useAuth } from "../context/AuthContext.jsx";
+import {
+  CommentProvider,
+  CommentSection,
+  useComments,
+} from "../context/CommentContext.jsx";
 import {
   Avatar,
   Button,
@@ -125,14 +131,11 @@ const buildUpdatedPollAfterVote = (poll, previousValue, nextValue) => {
 
 export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
   const [value, setValue] = useState(poll.myVote ?? "");
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
-  const [commentCount, setCommentCount] = useState(poll.comments || 0);
-  const [showComments, setShowComments] = useState(false);
   const [busy, setBusy] = useState(false);
   const [managing, setManaging] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [error, setError] = useState("");
+  const { user } = useAuth();
   const isBookmarked = Boolean(poll.isBookmarked);
 
   const vote = async (nextValue) => {
@@ -206,67 +209,8 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
   };
 
   useEffect(() => {
-    setCommentCount(poll.comments || 0);
-  }, [poll.comments]);
-
-  useEffect(() => {
     setValue(poll.myVote ?? "");
   }, [poll.myVote]);
-
-  const loadComments = async () => {
-    const { data } = await api.get(`/comments/${poll._id}`);
-    const nextComments = normalizeComments(data);
-    setComments(nextComments);
-    setCommentCount(nextComments.length);
-  };
-
-  const toggleComments = async () => {
-    const next = !showComments;
-    setShowComments(next);
-    if (next) await loadComments();
-  };
-
-  const addComment = async (event) => {
-    event.preventDefault();
-    const text = comment.trim();
-    if (!text) return;
-
-    const optimisticComment = {
-      _id: `local-${Date.now()}`,
-      text,
-      user: { name: "You" },
-    };
-
-    setComment("");
-    setComments((current) => {
-      const safeCurrent = normalizeComments(current);
-      return [optimisticComment].concat(safeCurrent);
-    });
-    setCommentCount((current) => current + 1);
-    onChanged?.(
-      Object.assign({}, poll, { comments: (poll.comments || 0) + 1 }),
-    );
-
-    try {
-      await api.post(`/comments/${poll._id}`, { text });
-      await loadComments();
-      const { data: refreshedPoll } = await api.get(`/polls/${poll._id}`);
-      onChanged?.(refreshedPoll);
-    } catch (err) {
-      setComments((current) =>
-        normalizeComments(current).filter(
-          (item) => item._id !== optimisticComment._id,
-        ),
-      );
-      setCommentCount((current) => Math.max(0, current - 1));
-      onChanged?.(
-        Object.assign({}, poll, {
-          comments: Math.max(0, (poll.comments || 0) - 1),
-        }),
-      );
-      setError(err.response?.data?.message || "Could not post your comment.");
-    }
-  };
 
   const renderOptionButton = (label, optionValue, imageUrl) => {
     const result = findResult(poll, optionValue);
@@ -308,177 +252,166 @@ export function PollCard({ poll, onChanged, onDeleted, canManage = false }) {
     );
   };
 
-  return (
-    <article className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-4 shadow-xl shadow-black/20">
-      <div className="mb-4 flex items-center gap-3">
-        <Avatar user={poll.creator} className="h-10 w-10" />
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold text-white">
-            {poll.creator?.name || "Pollify user"}
-          </p>
-          <p className="text-xs text-zinc-500">
-            @{poll.creator?.username || "user"} · {poll.category || "General"}
-          </p>
+  const PollCardContent = () => {
+    const { commentCount, showComments, toggleComments } = useComments();
+
+    return (
+      <article className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-4 shadow-xl shadow-black/20">
+        <div className="mb-4 flex items-center gap-3">
+          <Avatar user={poll.creator} className="h-10 w-10" />
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-white">
+              {poll.creator?.name || "Pollify user"}
+            </p>
+            <p className="text-xs text-zinc-500">
+              @{poll.creator?.username || "user"} · {poll.category || "General"}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {canManage && (
+              <>
+                <button
+                  type="button"
+                  onClick={togglePollStatus}
+                  disabled={managing}
+                  className="rounded-xl border border-zinc-700 bg-zinc-950 px-2.5 py-2 text-xs text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200"
+                >
+                  <span className="flex items-center gap-1">
+                    <Lock size={14} />
+                    {poll.closed ? "Re-open" : "Close"}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowDeleteModal(true)}
+                  disabled={managing}
+                  className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-2.5 py-2 text-xs text-rose-300 transition hover:border-rose-400"
+                >
+                  <span className="flex items-center gap-1">
+                    <Trash2 size={14} />
+                    Delete
+                  </span>
+                </button>
+              </>
+            )}
+            <button
+              type="button"
+              aria-label="Toggle bookmark"
+              onClick={bookmark}
+              className={`rounded-xl p-2 ${
+                isBookmarked
+                  ? "bg-emerald-500/15 text-emerald-300"
+                  : "text-zinc-500 hover:bg-zinc-800"
+              }`}
+            >
+              <Bookmark size={18} />
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          {canManage && (
-            <>
-              <button
-                type="button"
-                onClick={togglePollStatus}
-                disabled={managing}
-                className="rounded-xl border border-zinc-700 bg-zinc-950 px-2.5 py-2 text-xs text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200"
-              >
-                <span className="flex items-center gap-1">
-                  <Lock size={14} />
-                  {poll.closed ? "Re-open" : "Close"}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowDeleteModal(true)}
-                disabled={managing}
-                className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-2.5 py-2 text-xs text-rose-300 transition hover:border-rose-400"
-              >
-                <span className="flex items-center gap-1">
-                  <Trash2 size={14} />
-                  Delete
-                </span>
-              </button>
-            </>
+
+        <h2 className="mb-4 text-lg font-bold leading-snug text-white">
+          {poll.question}
+        </h2>
+
+        <div className="grid gap-2">
+          {poll.type === "yesno" &&
+            ["Yes", "No"].map((label, index) =>
+              renderOptionButton(label, index),
+            )}
+          {poll.type === "single" &&
+            normalizeOptions(poll.options).map((option, index) =>
+              renderOptionButton(option.text, index),
+            )}
+          {poll.type === "image" &&
+            normalizeOptions(poll.options).map((option, index) =>
+              renderOptionButton(
+                option.text || `Option ${index + 1}`,
+                index,
+                option.image,
+              ),
+            )}
+          {poll.type === "rating" && (
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <button
+                  key={rating}
+                  type="button"
+                  disabled={busy || poll.closed}
+                  onClick={() => vote(rating)}
+                  className={`flex flex-1 items-center justify-center rounded-xl border py-3 ${
+                    Number(value) === rating
+                      ? "border-amber-400 bg-amber-500/10 text-amber-300"
+                      : "border-zinc-800 text-zinc-500 hover:text-amber-300"
+                  }`}
+                >
+                  <Star size={18} fill="currentColor" />
+                </button>
+              ))}
+            </div>
           )}
+          {poll.type === "open" && (
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                vote(value);
+              }}
+              className="flex gap-2"
+            >
+              <Field
+                value={value}
+                onChange={(event) => setValue(event.target.value)}
+                placeholder="Type your answer"
+                className="flex-1"
+              />
+              <Button
+                type="submit"
+                disabled={!String(value).trim() || busy || poll.closed}
+              >
+                Submit
+              </Button>
+            </form>
+          )}
+        </div>
+
+        {error && <p className="mt-3 text-xs text-rose-300">{error}</p>}
+
+        <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+          <span className="inline-flex items-center gap-1">
+            <ThumbsUp size={14} />
+            {poll.totalVotes || 0} votes
+          </span>
           <button
             type="button"
-            aria-label="Toggle bookmark"
-            onClick={bookmark}
-            className={`rounded-xl p-2 ${
-              isBookmarked
-                ? "bg-emerald-500/15 text-emerald-300"
-                : "text-zinc-500 hover:bg-zinc-800"
-            }`}
+            onClick={() => toggleComments()}
+            className="inline-flex items-center gap-1 hover:text-zinc-300"
           >
-            <Bookmark size={18} />
+            <MessageCircle size={14} />
+            {commentCount} comments
           </button>
+          <span className="inline-flex items-center gap-1">
+            <BarChart3 size={14} />
+            {poll.views || 0} views
+          </span>
         </div>
-      </div>
 
-      <h2 className="mb-4 text-lg font-bold leading-snug text-white">
-        {poll.question}
-      </h2>
+        <ConfirmModal
+          open={showDeleteModal}
+          title="Delete poll"
+          message="This will permanently remove the poll and its comments. Continue?"
+          confirmLabel="Delete"
+          onConfirm={deletePoll}
+          onCancel={() => setShowDeleteModal(false)}
+        />
 
-      <div className="grid gap-2">
-        {poll.type === "yesno" &&
-          ["Yes", "No"].map((label, index) => renderOptionButton(label, index))}
-        {poll.type === "single" &&
-          normalizeOptions(poll.options).map((option, index) =>
-            renderOptionButton(option.text, index),
-          )}
-        {poll.type === "image" &&
-          normalizeOptions(poll.options).map((option, index) =>
-            renderOptionButton(
-              option.text || `Option ${index + 1}`,
-              index,
-              option.image,
-            ),
-          )}
-        {poll.type === "rating" && (
-          <div className="flex gap-2">
-            {[1, 2, 3, 4, 5].map((rating) => (
-              <button
-                key={rating}
-                type="button"
-                disabled={busy || poll.closed}
-                onClick={() => vote(rating)}
-                className={`flex flex-1 items-center justify-center rounded-xl border py-3 ${
-                  Number(value) === rating
-                    ? "border-amber-400 bg-amber-500/10 text-amber-300"
-                    : "border-zinc-800 text-zinc-500 hover:text-amber-300"
-                }`}
-              >
-                <Star size={18} fill="currentColor" />
-              </button>
-            ))}
-          </div>
-        )}
-        {poll.type === "open" && (
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              vote(value);
-            }}
-            className="flex gap-2"
-          >
-            <Field
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-              placeholder="Type your answer"
-              className="flex-1"
-            />
-            <Button
-              type="submit"
-              disabled={!String(value).trim() || busy || poll.closed}
-            >
-              Submit
-            </Button>
-          </form>
-        )}
-      </div>
+        {showComments && <CommentSection />}
+      </article>
+    );
+  };
 
-      {error && <p className="mt-3 text-xs text-rose-300">{error}</p>}
-
-      <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-zinc-500">
-        <span className="inline-flex items-center gap-1">
-          <ThumbsUp size={14} />
-          {poll.totalVotes || 0} votes
-        </span>
-        <button
-          type="button"
-          onClick={toggleComments}
-          className="inline-flex items-center gap-1 hover:text-zinc-300"
-        >
-          <MessageCircle size={14} />
-          {commentCount} comments
-        </button>
-        <span className="inline-flex items-center gap-1">
-          <BarChart3 size={14} />
-          {poll.views || 0} views
-        </span>
-      </div>
-
-      <ConfirmModal
-        open={showDeleteModal}
-        title="Delete poll"
-        message="This will permanently remove the poll and its comments. Continue?"
-        confirmLabel="Delete"
-        onConfirm={deletePoll}
-        onCancel={() => setShowDeleteModal(false)}
-      />
-
-      {showComments && (
-        <div className="mt-4 border-t border-zinc-800 pt-4">
-          <form onSubmit={addComment} className="mb-3 flex gap-2">
-            <input
-              value={comment}
-              onChange={(event) => setComment(event.target.value)}
-              placeholder="Add a comment"
-              className="flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-200 outline-none"
-            />
-            <Button type="submit">Post</Button>
-          </form>
-          <div className="space-y-2">
-            {normalizeComments(comments).map((item) => (
-              <p
-                key={item._id}
-                className="rounded-xl bg-zinc-950 p-3 text-sm text-zinc-300"
-              >
-                <b className="text-zinc-100">{item.user?.name}: </b>
-                {item.text}
-              </p>
-            ))}
-          </div>
-        </div>
-      )}
-    </article>
+  return (
+    <CommentProvider poll={poll} user={user} onChanged={onChanged}>
+      <PollCardContent />
+    </CommentProvider>
   );
 }
 
