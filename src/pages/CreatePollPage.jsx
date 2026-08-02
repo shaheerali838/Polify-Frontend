@@ -132,7 +132,7 @@ export default function CreatePollPage() {
                     )
                   }
                   placeholder={`Option ${index + 1}`}
-                  className="flex-1 rounded-xl border border-zinc-400 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-200 outline-none"
+                  className="flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-950 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30"
                 />
                 <button
                   type="button"

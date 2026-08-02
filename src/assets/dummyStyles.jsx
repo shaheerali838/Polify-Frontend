@@ -1,4 +1,4 @@
-﻿// assets/dummyStyles.js
+// assets/dummyStyles.js
 
 export const authLayoutStyles = {
   // Layout containers
@@ -544,7 +544,7 @@ export const uiElementStyles = {
 
   // Input
   inputCls:
-    "w-full rounded-xl border border-zinc-500 dark:border-zinc-700 bg-zinc-200/60 dark:bg-zinc-800/60 px-4 py-2.5 text-zinc-950 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-700 dark:placeholder:text-zinc-500 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm",
+    "w-full rounded-xl border border-zinc-400 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2.5 text-zinc-950 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm",
 
   // AuthButton
   authButton:
@@ -723,7 +723,7 @@ export const loginStyles = {
   label: "block text-[10px] font-bold text-zinc-500 dark:text-zinc-700 dark:text-zinc-500 uppercase tracking-widest",
   inputWrapper: "relative",
   input:
-    "w-full rounded-xl border border-zinc-500/80 dark:border-zinc-700/80 bg-zinc-200/50 dark:bg-zinc-800/50 px-4 py-3 text-zinc-950 dark:text-white placeholder:text-zinc-600 dark:placeholder:text-zinc-600 outline-none transition-all focus:border-emerald-500/60 focus:ring-2 focus:ring-emerald-500/12 text-sm",
+    "w-full rounded-xl border border-zinc-400 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-3 text-zinc-950 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-all focus:border-emerald-500/60 focus:ring-2 focus:ring-emerald-500/12 text-sm",
   inputWithIcon: "pr-11",
   icon: "absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-600 dark:text-zinc-600 pointer-events-none",
   passwordRow: "flex items-center justify-between",

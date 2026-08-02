@@ -144,8 +144,8 @@ export function SelectField({
                 onClick={() => selectOption(option.value)}
                 className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition ${
                   isSelected
-                    ? "bg-emerald-500/15 text-emerald-200"
-                    : "text-zinc-500 dark:text-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white"
+                    ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-medium"
+                    : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white"
                 }`}
               >
                 <span>{option.label}</span>
